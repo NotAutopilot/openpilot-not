@@ -4,6 +4,7 @@ NAP Script Runner
 
 Standalone full-screen application for running scripts with live output display.
 Launched as a separate process to take over the display.
+Pedal calibration uses the in-process pedal wizard and is rejected here.
 
 Usage:
     ./run_script.py "Title" "module.path.to.script" "Instructions text..."
@@ -25,11 +26,9 @@ import pyray as rl
 sys.path.insert(0, '/data/openpilot')
 
 from openpilot.common.params import Params
-from openpilot.system.ui.lib.application import gui_app, FontWeight
-from openpilot.system.ui.lib.scroll_panel import GuiScrollPanel
-from openpilot.system.ui.lib.text_measure import measure_text_cached
-from openpilot.system.ui.widgets.button import Button, ButtonStyle
 from openpilot.system.hardware import HARDWARE, PC
+
+PEDAL_STANDALONE_MODULES = frozenset({"scripts.nap.calibrate_pedal", "calibrate_pedal"})
 
 # UI Constants
 MARGIN = 50
@@ -51,9 +50,13 @@ class ScriptState:
 
 class ScriptRunnerApp:
   def __init__(self, title: str, script_module: str, instructions: str):
+    from openpilot.system.ui.lib.application import gui_app
+    from openpilot.system.ui.lib.scroll_panel import GuiScrollPanel
+
     self._title = title
     self._script_module = script_module
     self._instructions = instructions
+    self._gui_app = gui_app
 
     self._state = ScriptState.READY
     self._output_lines: list[str] = []
@@ -73,8 +76,11 @@ class ScriptRunnerApp:
 
   def _init_ui(self):
     """Initialize UI components after window is created"""
-    self._font = gui_app.font(FontWeight.NORMAL)
-    self._title_font = gui_app.font(FontWeight.BOLD)
+    from openpilot.system.ui.lib.application import FontWeight
+    from openpilot.system.ui.widgets.button import Button, ButtonStyle
+
+    self._font = self._gui_app.font(FontWeight.NORMAL)
+    self._title_font = self._gui_app.font(FontWeight.BOLD)
 
     self._start_button = Button(
       "Start",
@@ -90,6 +96,7 @@ class ScriptRunnerApp:
     )
 
   def _wrap_text(self, text: str, max_width: float, font_size: int) -> list[str]:
+    from openpilot.system.ui.lib.text_measure import measure_text_cached
     lines = []
     for paragraph in text.split("\n"):
       if not paragraph.strip():
@@ -170,9 +177,7 @@ class ScriptRunnerApp:
     if self._process and self._process.poll() is None:
       # Cooperative cancel: SIGINT raises KeyboardInterrupt in the
       # child, so its finally blocks run (Panda safety reset, pedal
-      # disable, etc.). Plain SIGTERM bypasses those, which for
-      # calibrate_pedal means leaving the interceptor at ALLOUTPUT
-      # with whatever GAS_COMMAND was last sent.
+      # disable, etc.). Plain SIGTERM bypasses those.
       self._process.send_signal(signal.SIGINT)
       try:
         self._process.wait(timeout=5)
@@ -200,7 +205,7 @@ class ScriptRunnerApp:
     # Clear NAPScriptRunning only after we've confirmed the child is gone.
     self._params.put_bool("NAPScriptRunning", False)
 
-    gui_app.request_close()
+    self._gui_app.request_close()
     if not PC:
       HARDWARE.reboot()
 
@@ -213,7 +218,8 @@ class ScriptRunnerApp:
         break
 
   def render(self):
-    rect = rl.Rectangle(0, 0, gui_app.width, gui_app.height)
+    from openpilot.system.ui.lib.text_measure import measure_text_cached
+    rect = rl.Rectangle(0, 0, self._gui_app.width, self._gui_app.height)
 
     # Draw background
     rl.draw_rectangle_rec(rect, rl.Color(20, 20, 20, 255))
@@ -275,6 +281,7 @@ class ScriptRunnerApp:
       current_y += LINE_HEIGHT
 
   def _render_output(self, rect, content_x, content_width, start_y):
+    from openpilot.system.ui.lib.text_measure import measure_text_cached
     button_area_height = BUTTON_HEIGHT + MARGIN * 2
     output_area_height = rect.height - start_y - button_area_height - rect.y
 
@@ -381,12 +388,18 @@ class ScriptRunnerApp:
 def main():
   if len(sys.argv) < 4:
     print("Usage: run_script.py <title> <module> <instructions>")
-    print("Example: run_script.py 'Pedal Calibration' 'scripts.nap.calibrate_pedal' 'Instructions...'")
+    print("Example: run_script.py 'EPAS Backup' 'scripts.nap.extract_epas' 'Keep the vehicle stationary.'")
     sys.exit(1)
 
   title = sys.argv[1]
   module = sys.argv[2]
   instructions = sys.argv[3]
+
+  if module in PEDAL_STANDALONE_MODULES:
+    print("ERROR: pedal calibration must run in the existing UI, not a second window")
+    sys.exit(1)
+
+  from openpilot.system.ui.lib.application import gui_app
 
   # Dispatch to the mici (comma 4) runner when the device's logical
   # canvas is small. The tici runner's hardcoded font/button sizes are

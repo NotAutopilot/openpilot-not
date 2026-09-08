@@ -29,3 +29,9 @@ def launch_script(title: str, instructions: str, script_module: str) -> None:
       stdout=log_file,
       stderr=log_file,
     )
+
+
+def open_pedal_wizard() -> None:
+  """Host pedal calibration in the existing UI. Never spawn a second DRM window."""
+  from scripts.nap.pedal_wizard import open_pedal_calibration
+  open_pedal_calibration()

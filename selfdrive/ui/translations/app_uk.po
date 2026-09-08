@@ -354,6 +354,23 @@ msgstr "Встановити оновлення"
 msgid "Joystick Debug Mode"
 msgstr "Режим зневадження джойстика"
 
+#: openpilot/selfdrive/ui/layouts/settings/nap_content.py
+msgid ""
+"Keep the car ON for calibration.\n"
+"\n"
+"1. Stop the vehicle and disengage assistance.\n"
+"2. Select Neutral and hold the brake.\n"
+"3. Release the accelerator.\n"
+"4. Check that the pedal connector is seated.\n"
+"5. Select the pedal's CAN bus below.\n"
+"\n"
+"Start pauses driving assistance. Cancel stops calibration.\n"
+"Settings are saved only after calibration succeeds.\n"
+"\n"
+"When finished, turn the car off to Exit,\n"
+"or choose Restart device. No automatic restart."
+msgstr ""
+
 #: openpilot/selfdrive/ui/widgets/ssh_key.py
 msgid "LOADING"
 msgstr "ЗАВАНТАЖЕННЯ"
@@ -361,6 +378,10 @@ msgstr "ЗАВАНТАЖЕННЯ"
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "LTE"
 msgstr "LTE"
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Lateral Maneuver Mode"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/developer.py
 msgid "Longitudinal Maneuver Mode"
@@ -377,6 +398,10 @@ msgstr "Максимізуйте завантаження навчальних �
 #: openpilot/selfdrive/ui/layouts/settings/device.py
 msgid "N/A"
 msgstr "Н/Д"
+
+#: openpilot/selfdrive/ui/layouts/settings/settings.py
+msgid "NAP"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "NO"
@@ -398,7 +423,6 @@ msgstr "Інформація про випуск відсутня."
 msgid "OFFLINE"
 msgstr "ОФЛАЙН"
 
-#: openpilot/selfdrive/ui/layouts/sidebar.py
 #: system/ui/widgets/confirm_dialog.py
 #: system/ui/widgets/html_render.py
 msgid "OK"
@@ -812,13 +836,6 @@ msgid_plural "{} minutes ago"
 msgstr[0] "{} хвилина тому"
 msgstr[1] "{} хвилини тому"
 msgstr[2] "{} хвилин тому"
-
-#: openpilot/selfdrive/ui/layouts/settings/firehose.py
-msgid "{} segment of your driving is in the training dataset so far."
-msgid_plural "{} segments of your driving is in the training dataset so far."
-msgstr[0] "{} сегмент вашого водіння на даний момент містяться в тренувальному наборі даних."
-msgstr[1] "{} сегменти вашого водіння на даний момент містяться в тренувальному наборі даних."
-msgstr[2] "{} сегментів вашого водіння на даний момент містяться в тренувальному наборі даних."
 
 #: openpilot/selfdrive/ui/widgets/prime.py
 msgid "✓ SUBSCRIBED"

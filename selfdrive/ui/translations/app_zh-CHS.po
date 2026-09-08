@@ -354,6 +354,23 @@ msgstr "安装更新"
 msgid "Joystick Debug Mode"
 msgstr "摇杆调试模式"
 
+#: openpilot/selfdrive/ui/layouts/settings/nap_content.py
+msgid ""
+"Keep the car ON for calibration.\n"
+"\n"
+"1. Stop the vehicle and disengage assistance.\n"
+"2. Select Neutral and hold the brake.\n"
+"3. Release the accelerator.\n"
+"4. Check that the pedal connector is seated.\n"
+"5. Select the pedal's CAN bus below.\n"
+"\n"
+"Start pauses driving assistance. Cancel stops calibration.\n"
+"Settings are saved only after calibration succeeds.\n"
+"\n"
+"When finished, turn the car off to Exit,\n"
+"or choose Restart device. No automatic restart."
+msgstr ""
+
 #: openpilot/selfdrive/ui/widgets/ssh_key.py
 msgid "LOADING"
 msgstr "加载中"
@@ -361,6 +378,10 @@ msgstr "加载中"
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "LTE"
 msgstr "LTE"
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Lateral Maneuver Mode"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/developer.py
 msgid "Longitudinal Maneuver Mode"
@@ -377,6 +398,10 @@ msgstr "最大化上传训练数据，以改进 openpilot 的驾驶模型。"
 #: openpilot/selfdrive/ui/layouts/settings/device.py
 msgid "N/A"
 msgstr "无"
+
+#: openpilot/selfdrive/ui/layouts/settings/settings.py
+msgid "NAP"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "NO"
@@ -398,7 +423,6 @@ msgstr "暂无发行说明。"
 msgid "OFFLINE"
 msgstr "离线"
 
-#: openpilot/selfdrive/ui/layouts/sidebar.py
 #: system/ui/widgets/confirm_dialog.py
 #: system/ui/widgets/html_render.py
 msgid "OK"
@@ -808,12 +832,6 @@ msgid "{} minute ago"
 msgid_plural "{} minutes ago"
 msgstr[0] "{} 分钟前"
 msgstr[1] "{} 分钟前"
-
-#: openpilot/selfdrive/ui/layouts/settings/firehose.py
-msgid "{} segment of your driving is in the training dataset so far."
-msgid_plural "{} segments of your driving is in the training dataset so far."
-msgstr[0] "目前已有 {} 个您的驾驶片段被纳入训练数据集。"
-msgstr[1] "目前已有 {} 个您的驾驶片段被纳入训练数据集。"
 
 #: openpilot/selfdrive/ui/widgets/prime.py
 msgid "✓ SUBSCRIBED"

@@ -354,6 +354,23 @@ msgstr "Installer la mise à jour"
 msgid "Joystick Debug Mode"
 msgstr "Mode débogage joystick"
 
+#: openpilot/selfdrive/ui/layouts/settings/nap_content.py
+msgid ""
+"Keep the car ON for calibration.\n"
+"\n"
+"1. Stop the vehicle and disengage assistance.\n"
+"2. Select Neutral and hold the brake.\n"
+"3. Release the accelerator.\n"
+"4. Check that the pedal connector is seated.\n"
+"5. Select the pedal's CAN bus below.\n"
+"\n"
+"Start pauses driving assistance. Cancel stops calibration.\n"
+"Settings are saved only after calibration succeeds.\n"
+"\n"
+"When finished, turn the car off to Exit,\n"
+"or choose Restart device. No automatic restart."
+msgstr ""
+
 #: openpilot/selfdrive/ui/widgets/ssh_key.py
 msgid "LOADING"
 msgstr "CHARGEMENT"
@@ -361,6 +378,10 @@ msgstr "CHARGEMENT"
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "LTE"
 msgstr "LTE"
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Lateral Maneuver Mode"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/developer.py
 msgid "Longitudinal Maneuver Mode"
@@ -377,6 +398,10 @@ msgstr "Maximisez vos envois de données d'entraînement pour améliorer les mod
 #: openpilot/selfdrive/ui/layouts/settings/device.py
 msgid "N/A"
 msgstr "NC"
+
+#: openpilot/selfdrive/ui/layouts/settings/settings.py
+msgid "NAP"
+msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "NO"
@@ -398,7 +423,6 @@ msgstr "Aucune note de version disponible."
 msgid "OFFLINE"
 msgstr "HORS LIGNE"
 
-#: openpilot/selfdrive/ui/layouts/sidebar.py
 #: system/ui/widgets/confirm_dialog.py
 #: system/ui/widgets/html_render.py
 msgid "OK"
@@ -808,12 +832,6 @@ msgid "{} minute ago"
 msgid_plural "{} minutes ago"
 msgstr[0] "il y a {} minute"
 msgstr[1] "il y a {} minutes"
-
-#: openpilot/selfdrive/ui/layouts/settings/firehose.py
-msgid "{} segment of your driving is in the training dataset so far."
-msgid_plural "{} segments of your driving is in the training dataset so far."
-msgstr[0] "{} segment de votre conduite est dans l'ensemble d'entraînement jusqu'à présent."
-msgstr[1] "{} segments de votre conduite sont dans l'ensemble d'entraînement jusqu'à présent."
 
 #: openpilot/selfdrive/ui/widgets/prime.py
 msgid "✓ SUBSCRIBED"

@@ -22,6 +22,7 @@ from openpilot.selfdrive.ui.layouts.settings.nap_content import (
   RADAR_OFFSET_MAX, RADAR_OFFSET_MIN,
   RESTORE_EPAS_INSTRUCTIONS,
   acknowledgments_html, find_preset_index,
+  pedal_calibration_entry_enabled,
 )
 from opendbc.car.tesla.preap.nap_params import NAPParamKeys, DEFAULTS
 from openpilot.selfdrive.ui.radar.radar_view import RadarMonitorDialog
@@ -161,7 +162,7 @@ class NAPLayout(Widget):
       description="Run the pedal calibration routine. Vehicle must be stationary with ignition on.",
       callback=self._on_calibrate_pedal,
     )
-    self._calibrate_pedal_btn.action_item.set_enabled(ui_state.is_offroad)
+    self._calibrate_pedal_btn.action_item.set_enabled(pedal_calibration_entry_enabled)
     self._main_items.append(self._calibrate_pedal_btn)
 
     # ── Section 3: Radar (submenu) ──
@@ -534,11 +535,8 @@ class NAPLayout(Widget):
   # ── Action button callbacks ──
 
   def _on_calibrate_pedal(self):
-    self._show_script_runner(
-      title="Pedal Calibration",
-      instructions=CALIBRATE_PEDAL_INSTRUCTIONS,
-      script_module="scripts.nap.calibrate_pedal",
-    )
+    from scripts.nap.pedal_wizard import open_pedal_calibration
+    open_pedal_calibration(CALIBRATE_PEDAL_INSTRUCTIONS)
 
   def _on_live_radar(self):
     gui_app.push_widget(RadarMonitorDialog())

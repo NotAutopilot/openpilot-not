@@ -11,15 +11,15 @@ from openpilot.system.ui.widgets.scroller import NavScroller
 from openpilot.selfdrive.ui.mici.widgets.big_multi_value_param import BigMultiValueParamToggle
 from openpilot.selfdrive.ui.mici.widgets.button import BigButton, BigParamControl
 from openpilot.selfdrive.ui.mici.widgets.dialog import BigConfirmationDialog, BigDialog, BigInputDialog
-from openpilot.selfdrive.ui.mici.layouts.settings.nap_script import launch_script
+from openpilot.selfdrive.ui.mici.layouts.settings.nap_script import launch_script, open_pedal_wizard
 from openpilot.selfdrive.ui.layouts.settings.nap_content import (
   BACKUP_EPAS_INSTRUCTIONS,
-  CALIBRATE_PEDAL_INSTRUCTIONS,
   FLASH_EPAS_INSTRUCTIONS,
   PEDAL_CAN_BUS_VALUES,
   RADAR_OFFSET_MAX,
   RADAR_OFFSET_MIN,
   RESTORE_EPAS_INSTRUCTIONS,
+  pedal_calibration_entry_enabled,
 )
 from openpilot.selfdrive.ui.radar.radar_view import RadarMonitorDialog
 from openpilot.selfdrive.ui.ui_state import ui_state
@@ -217,18 +217,11 @@ class NAPLayoutMici(NavScroller):
       "calibrated" if self._params.get_bool(NAPParamKeys.PEDAL_CALIB_DONE) else "not calibrated",
     )
 
-    # Offroad-gate the menu tap on all action buttons. Stationary scripts
-    # still need ignition on at Start press, but the user's path is
-    # "tap offroad → open runner → turn car on → press Start." Gating
-    # the menu tap on offroad just means the user can't open the runner
-    # while actively driving; the script's own preconditions handle the
-    # ignition-on state at Start.
+    # Pedal calibration is hosted in-process. Engaged/moving stay blocked;
+    # waiting for vehicle state still opens the wizard so Start can show why.
     calibrate_pedal_btn = BigButton("calibrate pedal", "start")
-    calibrate_pedal_btn.set_click_callback(
-      lambda: launch_script("Pedal Calibration", CALIBRATE_PEDAL_INSTRUCTIONS,
-                            "scripts.nap.calibrate_pedal",
-                            ))
-    calibrate_pedal_btn.set_enabled(ui_state.is_offroad)
+    calibrate_pedal_btn.set_click_callback(open_pedal_wizard)
+    calibrate_pedal_btn.set_enabled(pedal_calibration_entry_enabled)
 
     radar_settings_btn = BigButton("radar settings", "open")
     radar_settings_btn.set_click_callback(lambda: gui_app.push_widget(RadarSettingsLayoutMici()))

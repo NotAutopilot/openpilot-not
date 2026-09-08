@@ -2,10 +2,8 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: openpilot/selfdrive/ui/layouts/sidebar.py
-#: system/ui/widgets/confirm_dialog.py
-#: system/ui/widgets/html_render.py
-msgid "OK"
+#: system/ui/widgets/list_view.py
+msgid "Error"
 msgstr ""
 
 #: system/ui/widgets/confirm_dialog.py
@@ -13,6 +11,11 @@ msgstr ""
 #: system/ui/widgets/network.py
 #: system/ui/widgets/option_dialog.py
 msgid "Cancel"
+msgstr ""
+
+#: system/ui/widgets/confirm_dialog.py
+#: system/ui/widgets/html_render.py
+msgid "OK"
 msgstr ""
 
 #: system/ui/widgets/network.py
@@ -133,12 +136,36 @@ msgstr ""
 msgid "Forget Wi-Fi Network \"{}\"?"
 msgstr ""
 
-#: system/ui/widgets/list_view.py
-msgid "Error"
-msgstr ""
-
 #: system/ui/widgets/option_dialog.py
 msgid "Select"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/exp_mode_button.py
+msgid "EXPERIMENTAL MODE ON"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/exp_mode_button.py
+msgid "CHILL MODE ON"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
+msgid "Close"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
+msgid "Snooze Update"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
+msgid "Acknowledge Excessive Actuation"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
+msgid "Reboot and Update"
+msgstr ""
+
+#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
+msgid "No release notes available."
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/device.py
@@ -168,26 +195,6 @@ msgstr ""
 
 #: openpilot/selfdrive/ui/widgets/setup.py
 msgid "Please connect to Wi-Fi to complete initial pairing"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
-msgid "Close"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
-msgid "Snooze Update"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
-msgid "Acknowledge Excessive Actuation"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
-msgid "Reboot and Update"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/offroad_alerts.py
-msgid "No release notes available."
 msgstr ""
 
 #: openpilot/selfdrive/ui/widgets/ssh_key.py
@@ -270,48 +277,6 @@ msgstr ""
 msgid "Become a comma prime member at connect.comma.ai"
 msgstr ""
 
-#: openpilot/selfdrive/ui/widgets/exp_mode_button.py
-msgid "EXPERIMENTAL MODE ON"
-msgstr ""
-
-#: openpilot/selfdrive/ui/widgets/exp_mode_button.py
-msgid "CHILL MODE ON"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/home.py
-msgid "UPDATE"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/home.py
-msgid "{} ALERT"
-msgid_plural "{} ALERTS"
-msgstr[0] ""
-msgstr[1] ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "Welcome to openpilot"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "You must accept the Terms and Conditions to use openpilot. Read the latest terms at https://comma.ai/terms before continuing."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "Decline"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "Agree"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "You must accept the Terms and Conditions in order to use openpilot."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/onboarding.py
-msgid "Decline, uninstall openpilot"
-msgstr ""
-
 #: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "--"
 msgstr ""
@@ -365,6 +330,10 @@ msgid "Unknown"
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/sidebar.py
+msgid "HIGH"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/sidebar.py
 msgid "NO"
 msgstr ""
 
@@ -373,11 +342,289 @@ msgid "PANDA"
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/sidebar.py
-msgid "HIGH"
+msgid "ERROR"
 msgstr ""
 
-#: openpilot/selfdrive/ui/layouts/sidebar.py
-msgid "ERROR"
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "Welcome to openpilot"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "You must accept the Terms and Conditions to use openpilot. Read the latest terms at https://comma.ai/terms before continuing."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "Decline"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "Agree"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "You must accept the Terms and Conditions in order to use openpilot."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/onboarding.py
+msgid "Decline, uninstall openpilot"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/home.py
+msgid "UPDATE"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/home.py
+msgid "{} ALERT"
+msgid_plural "{} ALERTS"
+msgstr[0] ""
+msgstr[1] ""
+
+#: openpilot/selfdrive/ui/layouts/settings/nap_content.py
+msgid ""
+"Keep the car ON for calibration.\n"
+"\n"
+"1. Stop the vehicle and disengage assistance.\n"
+"2. Select Neutral and hold the brake.\n"
+"3. Release the accelerator.\n"
+"4. Check that the pedal connector is seated.\n"
+"5. Select the pedal's CAN bus below.\n"
+"\n"
+"Start pauses driving assistance. Cancel stops calibration.\n"
+"Settings are saved only after calibration succeeds.\n"
+"\n"
+"When finished, turn the car off to Exit,\n"
+"or choose Restart device. No automatic restart."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "checking..."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "downloading..."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "finalizing update..."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "never"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "now"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "CHECK"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Are you sure you want to uninstall?"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Uninstall"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Select a branch"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "{} minute ago"
+msgid_plural "{} minutes ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "{} hour ago"
+msgid_plural "{} hours ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "{} day ago"
+msgid_plural "{} days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Updates are only downloaded while the car is off."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Current Version"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Download"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Install Update"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "INSTALL"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "Target Branch"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "SELECT"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "failed to check for update"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "UNINSTALL"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "update available"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "DOWNLOAD"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "up to date, last checked never"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/software.py
+msgid "up to date, last checked {}"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/firehose.py
+msgid "Firehose Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Enable ADB"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Enable SSH"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "SSH Keys"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Joystick Debug Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Longitudinal Maneuver Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "Lateral Maneuver Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "openpilot Longitudinal Control (Alpha)"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+msgid "UI Debug Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/developer.py
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Enable"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "When enabled, pressing the accelerator pedal will disengage openpilot."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Enable driver monitoring even when openpilot is not engaged."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Upload data from the driver facing camera and help improve the driver monitoring algorithm."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Display speed in km/h instead of mph."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Record and store microphone audio while driving. The audio will be included in the dashcam video in comma connect."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Driving Personality"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Changing this setting will restart openpilot if the car is powered on."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Experimental mode is currently unavailable on this car since the car's stock ACC is used for longitudinal control."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Enable openpilot"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Experimental Mode"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Disengage on Accelerator Pedal"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Enable Lane Departure Warnings"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Always-On Driver Monitoring"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Record and Upload Driver Camera"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Record and Upload Microphone Audio"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Use Metric System"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "openpilot longitudinal control may come in a future update."
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Aggressive"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Standard"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Relaxed"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/toggles.py
+msgid "Enable the openpilot longitudinal control (alpha) toggle to allow Experimental mode."
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/device.py
@@ -528,155 +775,6 @@ msgstr ""
 msgid " Steering torque response calibration is {}% complete."
 msgstr ""
 
-#: openpilot/selfdrive/ui/layouts/settings/firehose.py
-msgid "Firehose Mode"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/firehose.py
-msgid "{} segment of your driving is in the training dataset so far."
-msgid_plural "{} segments of your driving is in the training dataset so far."
-msgstr[0] ""
-msgstr[1] ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "Enable ADB"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "Enable SSH"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "SSH Keys"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "Joystick Debug Mode"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "Longitudinal Maneuver Mode"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "openpilot Longitudinal Control (Alpha)"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-msgid "UI Debug Mode"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/developer.py
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Enable"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "checking..."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "downloading..."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "finalizing update..."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "never"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "now"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "CHECK"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Are you sure you want to uninstall?"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Uninstall"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Select a branch"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "{} minute ago"
-msgid_plural "{} minutes ago"
-msgstr[0] ""
-msgstr[1] ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "{} hour ago"
-msgid_plural "{} hours ago"
-msgstr[0] ""
-msgstr[1] ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "{} day ago"
-msgid_plural "{} days ago"
-msgstr[0] ""
-msgstr[1] ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Updates are only downloaded while the car is off."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Current Version"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Download"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Install Update"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "INSTALL"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "Target Branch"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "SELECT"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "failed to check for update"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "UNINSTALL"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "update available"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "DOWNLOAD"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "up to date, last checked never"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/software.py
-msgid "up to date, last checked {}"
-msgstr ""
-
 #: openpilot/selfdrive/ui/layouts/settings/settings.py
 msgid "Device"
 msgstr ""
@@ -694,111 +792,15 @@ msgid "Software"
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/settings.py
+msgid "NAP"
+msgstr ""
+
+#: openpilot/selfdrive/ui/layouts/settings/settings.py
 msgid "Firehose"
 msgstr ""
 
 #: openpilot/selfdrive/ui/layouts/settings/settings.py
 msgid "Developer"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "When enabled, pressing the accelerator pedal will disengage openpilot."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Enable driver monitoring even when openpilot is not engaged."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Upload data from the driver facing camera and help improve the driver monitoring algorithm."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Display speed in km/h instead of mph."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Record and store microphone audio while driving. The audio will be included in the dashcam video in comma connect."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Driving Personality"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Changing this setting will restart openpilot if the car is powered on."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Experimental mode is currently unavailable on this car since the car's stock ACC is used for longitudinal control."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Enable openpilot"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Experimental Mode"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Disengage on Accelerator Pedal"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Enable Lane Departure Warnings"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Always-On Driver Monitoring"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Record and Upload Driver Camera"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Record and Upload Microphone Audio"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Use Metric System"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "openpilot longitudinal control may come in a future update."
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Aggressive"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Standard"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Relaxed"
-msgstr ""
-
-#: openpilot/selfdrive/ui/layouts/settings/toggles.py
-msgid "Enable the openpilot longitudinal control (alpha) toggle to allow Experimental mode."
-msgstr ""
-
-#: openpilot/selfdrive/ui/onroad/driver_camera_dialog.py
-msgid "camera starting"
-msgstr ""
-
-#: openpilot/selfdrive/ui/onroad/hud_renderer.py
-msgid "MAX"
-msgstr ""
-
-#: openpilot/selfdrive/ui/onroad/hud_renderer.py
-msgid "km/h"
-msgstr ""
-
-#: openpilot/selfdrive/ui/onroad/hud_renderer.py
-msgid "mph"
 msgstr ""
 
 #: openpilot/selfdrive/ui/onroad/alert_renderer.py
@@ -819,5 +821,21 @@ msgstr ""
 
 #: openpilot/selfdrive/ui/onroad/alert_renderer.py
 msgid "Reboot Device"
+msgstr ""
+
+#: openpilot/selfdrive/ui/onroad/hud_renderer.py
+msgid "MAX"
+msgstr ""
+
+#: openpilot/selfdrive/ui/onroad/hud_renderer.py
+msgid "km/h"
+msgstr ""
+
+#: openpilot/selfdrive/ui/onroad/hud_renderer.py
+msgid "mph"
+msgstr ""
+
+#: openpilot/selfdrive/ui/onroad/driver_camera_dialog.py
+msgid "camera starting"
 msgstr ""
 

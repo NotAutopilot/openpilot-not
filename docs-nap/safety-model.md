@@ -23,7 +23,7 @@ Pre-AP EPAS firmware uses a byte-sum checksum, but the exact algorithm has not b
 
 Tinkla's RX checks also disabled checksum/counter validation. Once the checksum algorithm is verified across all in-the-wild EPAS firmware, these can be re-enabled.
 
-All actual safety logic remains active:
+Driving-mode safety logic remains active:
 
 - Steering angle + rate limits via `steer_angle_cmd_checks_vm()`
 - `controls_allowed` gating on every TX
@@ -55,6 +55,30 @@ static const CanMsg PREAP_TX_MSGS[] = {
 ```
 
 `0x45` is the stalk-action request message. We spoof it to drive stock Tesla CC when no pedal is installed (see [engagement.md](engagement.md)). There is no relay to hide behind, so every TX address must be explicitly listed.
+
+## Pedal calibration mode
+
+Pedal calibration uses a separate restricted `teslaPreap` configuration, not
+`allOutput`. The only valid calibration parameters are `64` for pedal bus 2
+and `96` for pedal bus 0. Combining calibration with driving flags or any
+other bits denies all transmission.
+
+This mode keeps `controls_allowed` false and permits only classic CAN
+`0x551`, length 6, on the selected pedal bus. Enabled commands require fresh
+bus-0 Neutral, applied-brake, and ESP speed signals. The speed tolerance is
+0.5 m/s; the freshness limit is one second. Command checksum, counter, and
+reserved bits are checked. Disabled commands with both raw values at or
+below 500 remain available to release the pedal outside that vehicle-state
+window. Steering, stalk, and diagnostic transmission are not permitted.
+
+The calibration process sends disengaged heartbeats from its active loop.
+A watchdog loss or safety-mode mismatch aborts calibration; it does not
+rearm the mode. The wizard requests that the driving processes stop before
+taking Panda ownership. A failed manager handoff cancels that request before
+Panda access. After handoff is acknowledged, suppression remains until the
+child has exited and a fresh ignition-off check permits Exit. Restart device
+is a separate explicit action, not an automatic consequence of finishing
+or canceling.
 
 ## GTW radar emulation
 

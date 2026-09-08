@@ -5,6 +5,8 @@ import from here so the safety-critical instruction strings (EPAS flash,
 calibration, restore) have a single source.
 """
 
+from openpilot.system.ui.lib.multilang import tr_noop
+
 # Preset values for float/int params exposed as multiple-button selectors.
 BRAKE_FACTOR_PRESETS = [0.5, 1.0, 1.5, 2.0]
 PEDAL_CAN_BUS_VALUES = [0, 2]
@@ -20,25 +22,20 @@ RADAR_OFFSET_MIN = -2.0
 RADAR_OFFSET_MAX = 2.0
 
 
-CALIBRATE_PEDAL_INSTRUCTIONS = """\
-NAP Pedal Calibrator
+CALIBRATE_PEDAL_INSTRUCTIONS = tr_noop("""Keep the car ON for calibration.
 
-This script calibrates the comma pedal interceptor for your pre-AP Tesla Model S.
+1. Stop the vehicle and disengage assistance.
+2. Select Neutral and hold the brake.
+3. Release the accelerator.
+4. Check that the pedal connector is seated.
+5. Select the pedal's CAN bus below.
 
-PRECONDITIONS:
-  1. Car must be ON
-  2. Gear must be in NEUTRAL
-  3. Brake pedal must be PRESSED and held
-  4. Do NOT press the accelerator pedal during calibration
+Start pauses driving assistance. Cancel stops calibration.
+Settings are saved only after calibration succeeds.
 
-The calibration process will:
-  - Detect pedal zero position
-  - Detect pedal maximum position
-  - Fine-tune the scale factor
-  - Validate the calibration values
-  - Save calibration to params
+When finished, turn the car off to Exit,
+or choose Restart device. No automatic restart.""")
 
-Press START when ready to begin calibration."""
 
 
 CALIBRATE_RADAR_INSTRUCTIONS = """\
@@ -195,3 +192,22 @@ def find_preset_index(presets: list, value, default: int = 0) -> int:
     return presets.index(value)
   except ValueError:
     return min(range(len(presets)), key=lambda i: abs(presets[i] - value))
+
+
+def pedal_calibration_entry_block_reason() -> str | None:
+  """Pedal-only exception: parked offroad, or ignition-on stationary/disengaged."""
+  from openpilot.selfdrive.ui.ui_state import ui_state
+  from scripts.nap.pedal_session import admission_from_submaster
+  return admission_from_submaster(ui_state.sm)
+
+
+def pedal_calibration_entry_enabled() -> bool:
+  """True when Calibrate Pedal may open the in-process wizard.
+
+  Engaged or moving stay blocked. Waiting for vehicle state still opens
+  the wizard so Start can show the reason instead of hiding the entry.
+  """
+  reason = pedal_calibration_entry_block_reason()
+  if reason is None:
+    return True
+  return "waiting" in reason
