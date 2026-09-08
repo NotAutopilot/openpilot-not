@@ -1,0 +1,193 @@
+# Page: vehicle (per-brand settings)
+# Compiles to settings_ui.json#vehicle_settings (brand = section id).
+id: vehicle
+label: Vehicle
+icon: vehicle
+order: 99
+kind: vehicle
+sections:
+- id: hyundai
+  title: Hyundai / Kia / Genesis Settings
+  description: ''
+  items:
+  - key: HyundaiLongitudinalTuning
+    widget: multiple_button
+    title: Custom Longitudinal Tuning
+    options:
+    - value: 0
+      label: 'Off'
+    - value: 1
+      label: Dynamic
+    - value: 2
+      label: Predictive
+    visibility:
+    - type: capability
+      field: hyundai_alpha_long_available
+      equals: true
+    enablement:
+    - $ref: '#/macros/offroad'
+    - $ref: '#/macros/longitudinal'
+- id: subaru
+  title: Subaru Settings
+  description: ''
+  items:
+  - key: SubaruStopAndGo
+    widget: toggle
+    title: Stop and Go (Beta)
+    enablement:
+    - $ref: '#/macros/offroad'
+    - type: capability
+      field: has_stop_and_go
+      equals: true
+  - key: SubaruStopAndGoManualParkingBrake
+    widget: toggle
+    title: Stop and Go for Manual Parking Brake (Beta)
+    enablement:
+    - $ref: '#/macros/offroad'
+    - type: capability
+      field: has_stop_and_go
+      equals: true
+- id: tesla
+  title: Tesla Settings
+  description: ''
+  items:
+  - key: TeslaCoopSteering
+    widget: toggle
+    title: Cooperative Steering (Beta)
+    visibility:
+    - $ref: '#/macros/not_tesla_preap'
+    enablement:
+    - $ref: '#/macros/offroad'
+  - key: TeslaMadsScreenButton
+    widget: multiple_button
+    title: MADS Screen Activation
+    description: 'Use a multi-finger press on the infotainment screen to toggle MADS.
+      This allows the use of full MADS functionality when enabled. Selecting a higher
+      finger count may reduce accidental activations. Note: Setting this to Off will
+      reset your MADS settings to default.'
+    options:
+    - value: 0
+      label: 'Off'
+    - value: 1
+      label: 3-Finger
+    - value: 2
+      label: 4-Finger
+    - value: 3
+      label: 5-Finger
+    visibility:
+    - type: capability
+      field: tesla_has_vehicle_bus
+      equals: true
+    - $ref: '#/macros/not_tesla_preap'
+    enablement:
+    - $ref: '#/macros/offroad'
+  - key: NAPFollowDistance
+    widget: multiple_button
+    title: Follow Distance
+    description: How far Pre-AP follows a detected lead. 1 is closest, 7 is farthest. Changes apply while driving.
+    options:
+    - value: 1
+      label: '1'
+    - value: 2
+      label: '2'
+    - value: 3
+      label: '3'
+    - value: 4
+      label: '4'
+    - value: 5
+      label: '5'
+    - value: 6
+      label: '6'
+    - value: 7
+      label: '7'
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+  - key: tesla_preap_longitudinal_path
+    widget: info
+    blocked: true
+    title: Longitudinal Path
+    description: Read-only physical longitudinal path from the active CP snapshot.
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+  - key: tesla_preap_pedal_health
+    widget: info
+    blocked: true
+    title: Pedal Health
+    description: Read-only pedal interceptor health from the active snapshot.
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+  - key: tesla_preap_radar_health
+    widget: info
+    blocked: true
+    title: Radar Health
+    description: Read-only Bosch radar health from the active snapshot.
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+  - key: NAPPedalEnabled
+    widget: toggle
+    blocked: true
+    needs_onroad_cycle: true
+    title: Pedal Interceptor
+    description: Enable the Comma Pedal interceptor.
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+    enablement:
+    - $ref: '#/macros/offroad'
+  - key: NAPPedalCanBus
+    widget: multiple_button
+    blocked: true
+    needs_onroad_cycle: true
+    title: Pedal CAN Bus
+    description: CAN bus for the Comma Pedal.
+    options:
+    - value: 0
+      label: Bus 0
+    - value: 2
+      label: Bus 2
+    visibility:
+    - $ref: '#/macros/tesla_preap_pedal'
+    enablement:
+    - $ref: '#/macros/offroad'
+  - key: NAPRadarEnabled
+    widget: toggle
+    blocked: true
+    needs_onroad_cycle: true
+    title: Bosch Radar
+    description: Enable the stock Bosch radar.
+    visibility:
+    - $ref: '#/macros/tesla_preap'
+    enablement:
+    - $ref: '#/macros/offroad'
+  - key: NAPRadarBehindNosecone
+    widget: toggle
+    blocked: true
+    needs_onroad_cycle: true
+    title: Radar Behind Nosecone
+    description: Attenuate a radar mounted behind the nosecone.
+    visibility:
+    - $ref: '#/macros/tesla_preap_radar'
+    enablement:
+    - $ref: '#/macros/offroad'
+- id: toyota
+  title: Toyota / Lexus Settings
+  description: ''
+  items:
+  - key: ToyotaEnforceStockLongitudinal
+    widget: toggle
+    needs_onroad_cycle: true
+    title: Enforce Factory Longitudinal Control
+    description: sunnypilot will not take over control of gas and brakes. Factory Toyota longitudinal control will be used.
+    enablement:
+    - $ref: '#/macros/not_engaged'
+  - key: ToyotaStopAndGoHack
+    widget: toggle
+    needs_onroad_cycle: true
+    title: Stop and Go Hack (Alpha)
+    description: sunnypilot will allow some Toyota/Lexus cars to auto resume during stop and go traffic. This feature is only
+      applicable to certain models that are able to use longitudinal control. This is an alpha feature. Use at your own risk.
+    enablement:
+    - $ref: '#/macros/not_engaged'
+    - $ref: '#/macros/longitudinal'
+    - type: param
+      key: ToyotaEnforceStockLongitudinal
+      equals: false

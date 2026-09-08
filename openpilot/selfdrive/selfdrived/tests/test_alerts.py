@@ -1,0 +1,280 @@
+import copy
+import json
+import os
+import random
+from PIL import Image, ImageDraw, ImageFont
+
+from openpilot.cereal import custom, log
+from opendbc.car.structs import car
+from openpilot.cereal.messaging import SubMaster
+from openpilot.common.basedir import BASEDIR
+from openpilot.common.params import Params
+from openpilot.common.realtime import DT_CTRL
+from openpilot.selfdrive.selfdrived.events import Alert, EVENTS, ET, AudibleAlert
+from openpilot.selfdrive.selfdrived.alertmanager import set_offroad_alert
+from openpilot.selfdrive.selfdrived.selfdrived import SelfdriveD
+from openpilot.selfdrive.test.process_replay.process_replay import CONFIGS
+
+AlertSize = log.SelfdriveState.AlertSize
+
+OFFROAD_ALERTS_PATH = os.path.join(BASEDIR, "openpilot/selfdrive/selfdrived/alerts_offroad.json")
+
+# TODO: add callback alerts
+ALERTS = []
+for event_types in EVENTS.values():
+  for alert in event_types.values():
+    ALERTS.append(alert)
+
+
+class TestAlerts:
+
+  @classmethod
+  def setup_class(cls):
+    with open(OFFROAD_ALERTS_PATH) as f:
+      cls.offroad_alerts = json.loads(f.read())
+
+      # Create fake objects for callback
+      cls.CS = car.CarState.new_message()
+      cls.CP = car.CarParams.new_message()
+      cfg = [c for c in CONFIGS if c.proc_name == 'selfdrived'][0]
+      cls.sm = SubMaster(cfg.pubs)
+
+  def test_events_defined(self):
+    # Ensure all events in capnp schema are defined in events.py
+    events = log.OnroadEvent.EventName.schema.enumerants
+
+    for name, e in events.items():
+      if not name.endswith("DEPRECATED") and not name.startswith("eventReserved"):
+        fail_msg = f"{name} @{e} not in EVENTS"
+        assert e in EVENTS.keys(), fail_msg
+
+  # ensure alert text doesn't exceed allowed width
+  def test_alert_text_length(self):
+    font_path = os.path.join(BASEDIR, "openpilot/selfdrive/assets/fonts")
+    regular_font_path = os.path.join(font_path, "Inter-SemiBold.ttf")
+    bold_font_path = os.path.join(font_path, "Inter-Bold.ttf")
+    semibold_font_path = os.path.join(font_path, "Inter-SemiBold.ttf")
+
+    max_text_width = 2160 - 300  # full screen width is usable, minus sidebar
+    draw = ImageDraw.Draw(Image.new('RGB', (0, 0)))
+
+    fonts = {
+      AlertSize.small: [ImageFont.truetype(semibold_font_path, 74)],
+      AlertSize.mid: [ImageFont.truetype(bold_font_path, 88),
+                      ImageFont.truetype(regular_font_path, 66)],
+    }
+
+    for alert in ALERTS:
+      if not isinstance(alert, Alert):
+        alert = alert(self.CP, self.CS, self.sm, False, 100, log.LongitudinalPersonality.standard)
+
+      # for full size alerts, both text fields wrap the text,
+      # so it's unlikely that they  would go past the max width
+      if alert.alert_size in (AlertSize.none, AlertSize.full):
+        continue
+
+      for i, txt in enumerate([alert.alert_text_1, alert.alert_text_2]):
+        if i >= len(fonts[alert.alert_size]):
+          break
+
+        font = fonts[alert.alert_size][i]
+        left, _, right, _ = draw.textbbox((0, 0), txt, font)
+        width = right - left
+        msg = f"type: {alert.alert_type} msg: {txt}"
+        assert width <= max_text_width, msg
+
+  def test_alert_sanity_check(self):
+    for event_types in EVENTS.values():
+      for event_type, a in event_types.items():
+        # TODO: add callback alerts
+        if not isinstance(a, Alert):
+          continue
+
+        if a.alert_size == AlertSize.none:
+          assert len(a.alert_text_1) == 0
+          assert len(a.alert_text_2) == 0
+        elif a.alert_size == AlertSize.small:
+          assert len(a.alert_text_1) > 0
+          assert len(a.alert_text_2) == 0
+        elif a.alert_size == AlertSize.mid:
+          assert len(a.alert_text_1) > 0
+          assert len(a.alert_text_2) > 0
+        else:
+          assert len(a.alert_text_1) > 0
+
+        assert a.duration >= 0.
+
+        if event_type not in (ET.WARNING, ET.PERMANENT, ET.PRE_ENABLE):
+          assert a.creation_delay == 0.
+
+  def test_preap_regen_alert_tells_driver_to_brake(self):
+    alert = EVENTS[log.OnroadEvent.EventName.pedalMaxRegen][ET.WARNING]
+
+    assert alert.alert_text_1 == "Regen Limit Reached"
+    assert alert.alert_text_2 == "Press Brake to Slow Down"
+    assert alert.alert_size == AlertSize.mid
+    assert alert.visual_alert == car.CarControl.HUDControl.VisualAlert.brakePressed
+    assert alert.audible_alert == AudibleAlert.promptRepeat
+    assert alert.duration == int(0.2 / DT_CTRL)
+
+  def test_preap_pedal_cruise_alerts_fire_while_disabled(self):
+    # ET.WARNING is omitted on the USER_DISABLE frame, so these must be
+    # permanent to play the disengage prompt on stalk cancel.
+    for name, text, sound in (
+      (log.OnroadEvent.EventName.pedalCruiseEnabled, "Pedal Cruise Engaged", AudibleAlert.engage),
+      (log.OnroadEvent.EventName.pedalCruiseDisabled, "Pedal Cruise Disengaged", AudibleAlert.disengage),
+    ):
+      event_types = EVENTS[name]
+      assert set(event_types) == {ET.PERMANENT}
+      alert = event_types[ET.PERMANENT]
+      assert alert.alert_text_1 == text
+      assert alert.audible_alert == sound
+      assert alert.duration == int(0.8 / DT_CTRL)
+
+  def test_preap_pcm_alerts_show_steering_prompt(self):
+    from openpilot.selfdrive.selfdrived.events import pcm_disable_alert, pcm_enable_alert
+
+    cp = car.CarParams.new_message()
+    cp.brand = "tesla"
+    cp.carFingerprint = "TESLA_MODEL_S_PREAP"
+    args = (cp, self.CS, self.sm, False, 100, log.LongitudinalPersonality.standard)
+
+    enable = pcm_enable_alert(*args)
+    assert enable.alert_text_1 == "Steering Engaged"
+    assert enable.audible_alert == AudibleAlert.engage
+
+    disable = pcm_disable_alert(*args)
+    assert disable.alert_text_1 == "Steering Disengaged"
+    assert disable.audible_alert == AudibleAlert.disengage
+
+    stock = car.CarParams.new_message()
+    stock_enable = pcm_enable_alert(stock, *args[1:])
+    assert stock_enable.alert_text_1 == ""
+    assert stock_enable.audible_alert == AudibleAlert.engage
+
+  def test_preap_pedal_unavailable_alert_is_visible_without_disabling_lateral(self):
+    event_types = EVENTS[log.OnroadEvent.EventName.pedalUnavailable]
+    alert = event_types[ET.WARNING]
+
+    assert set(event_types) == {ET.WARNING}
+    assert alert.alert_text_1 == "Pedal Control Unavailable"
+    assert alert.alert_text_2 == "Speed Control Disabled"
+    assert alert.alert_size == AlertSize.mid
+    assert alert.duration == int(3.0 / DT_CTRL)
+
+  def test_offroad_alerts(self):
+    params = Params()
+    for a in self.offroad_alerts:
+      # set the alert
+      alert = copy.copy(self.offroad_alerts[a])
+      set_offroad_alert(a, True)
+      alert['extra'] = ''
+      assert alert == params.get(a)
+
+      # then delete it
+      set_offroad_alert(a, False)
+      assert params.get(a) is None
+
+  def test_offroad_alerts_extra_text(self):
+    params = Params()
+    for i in range(50):
+      # set the alert
+      a = random.choice(list(self.offroad_alerts))
+      alert = self.offroad_alerts[a]
+      set_offroad_alert(a, True, extra_text="a"*i)
+
+      written_alert = params.get(a)
+      assert "a"*i == written_alert['extra']
+      assert alert["text"] == written_alert['text']
+
+
+
+
+EventName = log.OnroadEvent.EventName
+_MISMATCH_FRAMES = int(6. / DT_CTRL) + 1
+
+
+def _preap_selfdrived(*, pcm_cruise=False, op_long=True):
+  cp = car.CarParams.new_message()
+  cp.brand = "tesla"
+  cp.carFingerprint = "TESLA_MODEL_S_PREAP"
+  cp.openpilotLongitudinalControl = op_long
+  cp.pcmCruise = pcm_cruise
+  sd = SelfdriveD(cp, custom.CarParamsSP.new_message())
+  sd.initialized = True
+  sd.startup_event = None
+  return sd
+
+
+def _cs(*, cruise_enabled=False, enable_long=False, brake=False, gas=False,
+        regen=False, can_valid=True):
+  cs = car.CarState.new_message()
+  cs.canValid = can_valid
+  cs.cruiseState.available = True
+  cs.cruiseState.enabled = cruise_enabled
+  cs.enableLongControl = enable_long
+  cs.brakePressed = brake
+  cs.gasPressed = gas
+  cs.regenBraking = regen
+  cs.gearShifter = car.CarState.GearShifter.drive
+  return cs
+
+
+class TestPreAPSelfdriveUpdateEvents:
+  def test_lat_only_does_not_cruise_mismatch_after_six_seconds(self):
+    sd = _preap_selfdrived()
+    sd.enabled = False
+    cs = _cs(cruise_enabled=True, enable_long=False)
+    for _ in range(_MISMATCH_FRAMES):
+      sd.update_events(cs)
+    assert EventName.cruiseMismatch not in sd.events.names
+
+  def test_long_intent_without_host_still_cruise_mismatch(self):
+    sd = _preap_selfdrived()
+    sd.enabled = False
+    cs = _cs(cruise_enabled=True, enable_long=True)
+    for _ in range(_MISMATCH_FRAMES):
+      sd.update_events(cs)
+    assert EventName.cruiseMismatch in sd.events.names
+
+  def test_brake_telemetry_does_not_generic_user_disable(self):
+    sd = _preap_selfdrived()
+    sd.CS_prev = _cs(cruise_enabled=True, enable_long=True)
+    cs = _cs(cruise_enabled=True, enable_long=True, brake=True)
+    sd.update_events(cs)
+    assert EventName.pedalPressed not in sd.events.names
+
+  def test_pedal_cruise_enabled_on_long_rising_with_gas_not_on_release(self):
+    sd = _preap_selfdrived()
+    sd.update_events(_cs(cruise_enabled=True, enable_long=False, gas=True))
+    assert EventName.pedalCruiseEnabled not in sd.events.names
+    sd.CS_prev = _cs(cruise_enabled=True, enable_long=False, gas=True)
+    sd.update_events(_cs(cruise_enabled=True, enable_long=True, gas=True))
+    assert EventName.pedalCruiseEnabled in sd.events.names
+    sd.CS_prev = _cs(cruise_enabled=True, enable_long=True, gas=True)
+    sd.update_events(_cs(cruise_enabled=True, enable_long=True, gas=False))
+    assert EventName.pedalCruiseEnabled not in sd.events.names
+    assert EventName.pedalCruiseDisabled not in sd.events.names
+
+  def test_gas_rising_still_generic_pedal_pressed(self):
+    sd = _preap_selfdrived()
+    sd.disengage_on_accelerator = True
+    sd.CS_prev = _cs()
+    cs = _cs(gas=True)
+    sd.update_events(cs)
+    assert EventName.pedalPressed in sd.events.names
+
+  def test_regen_still_generic_pedal_pressed(self):
+    sd = _preap_selfdrived()
+    sd.CS_prev = _cs()
+    cs = _cs(regen=True)
+    sd.update_events(cs)
+    assert EventName.pedalPressed in sd.events.names
+
+  def test_pcm_preap_still_mismatches_on_cruise_state_enabled(self):
+    sd = _preap_selfdrived(pcm_cruise=True, op_long=False)
+    sd.enabled = False
+    cs = _cs(cruise_enabled=True, enable_long=False)
+    for _ in range(_MISMATCH_FRAMES):
+      sd.update_events(cs)
+    assert EventName.cruiseMismatch in sd.events.names

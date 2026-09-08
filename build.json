@@ -1,0 +1,11 @@
+{
+  "channel": "naponsp-alpha-prebuilt",
+  "openpilot": {
+    "version": "2026.003.000",
+    "release_notes": "tesla_preap: keep cruise through optional pause",
+    "git_commit": "e702d13397d32955ce90df30b38b928d33bea592",
+    "git_origin": "https://github.com/notautopilot/openpilot.git",
+    "git_commit_date": "2026-09-08T02:39:57+00:00",
+    "build_style": "prebuilt"
+  }
+}
