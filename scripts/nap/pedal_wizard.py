@@ -389,7 +389,7 @@ class PedalWizardController:
         return
     self._ignore_done = True
     self.state = ScriptState.ERROR
-    self.output_lines.append("[Cancelled]")
+    self.output_lines.append("[Canceled]")
     self.output_lines.append("Turn the car off, then Check ignition / Exit. Restart device is optional.")
 
   def request_exit(self) -> str:
